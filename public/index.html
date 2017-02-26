@@ -182,20 +182,23 @@ el('rsvp_submit').addEventListener('click', function () {
             });
         }
     }
-    var request = new XMLHttpRequest();
-    request.addEventListener('load', function () {
-        var success = el('rsvp_success');
-        success.style.display = 'block';
-        if (any_attending) {
-            success.innerText = 'Great, we\'ll see you there!';
-        } else {
-            success.innerText = 'We\'re sorry you can\'t join us.  Fortunately, you can still the watch the live stream!  We\'ll send more details.';
-        }
-        el('rsvp_form').style.display = 'none';
-    });
-    request.open('POST', 'https://apriljonah-67575.firebaseio.com/rsvps.json');
-    request.setRequestHeader('Content-type', 'application/json');
-    request.send(JSON.stringify({attendees: attendees}));
+
+    if (attendees.length) {
+        var request = new XMLHttpRequest();
+        request.addEventListener('load', function () {
+            var success = el('rsvp_success');
+            success.style.display = 'block';
+            if (any_attending) {
+                success.innerText = 'Great, we\'ll see you there!';
+            } else {
+                success.innerText = 'We\'re sorry you can\'t join us.  Fortunately, you can still the watch the live stream!  We\'ll send more details.';
+            }
+            el('rsvp_form').style.display = 'none';
+        });
+        request.open('POST', 'https://apriljonah-67575.firebaseio.com/rsvps.json');
+        request.setRequestHeader('Content-type', 'application/json');
+        request.send(JSON.stringify({attendees: attendees}));
+    }
 });
 </script>
 </body>
