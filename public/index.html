@@ -99,6 +99,11 @@ select.rsvp_answer {
     margin-bottom: 80px;;
 }
 
+#rsvp_success {
+    display: none;
+    margin-bottom: 80px;;
+}
+
 @media only screen and (max-device-width: 768px) and (min-device-width: 481px) {
     h1 {
         font-size: 7em;
@@ -126,8 +131,11 @@ select.rsvp_answer {
     <h2><time datetime="2017-09-16">Sunday, September 16th, 2017</time></h2>
 </div>
 <h3 class="rsvp_title">RSVP</h3>
-<div id="rsvp"></div>
-<button id="rsvp_submit">Submit</button>
+<div id="rsvp_form">
+    <div id="rsvp"></div>
+    <button id="rsvp_submit">Submit</button>
+</div>
+<p id="rsvp_success"><p>
 
 <script>
 var el = document.getElementById.bind(document);
@@ -156,6 +164,38 @@ rsvp.addEventListener('input', function (event) {
         }
     }
     addRsvp('+' + rsvps.length + ' (optional)');
+});
+
+el('rsvp_submit').addEventListener('click', function () {
+    var any_attending = false;
+    var attendees = [];
+    var rsvp_names = rsvp.getElementsByClassName('rsvp_name');
+    var rsvp_phones = rsvp.getElementsByClassName('rsvp_phone');
+    var rsvp_answers = rsvp.getElementsByClassName('rsvp_answer');
+    for (var i = 0; i < rsvp_names.length; i++) {
+        if (rsvp_names[i].value) {
+            any_attending = any_attending || rsvp_answers[i].value === 'Attending';
+            attendees.push({
+                name: rsvp_names[i].value,
+                phone: rsvp_phones[i].value,
+                is_attending: rsvp_answers[i].value === 'Attending'
+            });
+        }
+    }
+    var request = new XMLHttpRequest();
+    request.addEventListener('load', function () {
+        var success = el('rsvp_success');
+        success.style.display = 'block';
+        if (any_attending) {
+            success.innerText = 'Great, we\'ll see you there!';
+        } else {
+            success.innerText = 'We\'re sorry you can\'t join us.  Fortunately, you can still the watch the live stream!  We\'ll send more details.';
+        }
+        el('rsvp_form').style.display = 'none';
+    });
+    request.open('POST', 'https://apriljonah-67575.firebaseio.com/rsvps.json');
+    request.setRequestHeader('Content-type', 'application/json');
+    request.send(JSON.stringify({attendees: attendees}));
 });
 </script>
 </body>
