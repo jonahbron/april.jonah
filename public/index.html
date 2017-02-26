@@ -44,6 +44,7 @@ h3 {
 
 .rsvp_title {
     line-height: 32px;
+    padding-top: 10px;
 }
 
 #rsvp {
@@ -104,6 +105,10 @@ select.rsvp_answer {
     margin-bottom: 80px;;
 }
 
+#rsvp_section {
+    min-height: 100vh;
+}
+
 @media only screen and (max-device-width: 768px) and (min-device-width: 481px) {
     h1 {
         font-size: 7em;
@@ -130,12 +135,14 @@ select.rsvp_answer {
     <h1>April + Jonah</h1>
     <h2><time datetime="2017-09-16">Sunday, September 16th, 2017</time></h2>
 </div>
-<h3 class="rsvp_title">RSVP</h3>
-<div id="rsvp_form">
-    <div id="rsvp"></div>
-    <button id="rsvp_submit">Submit</button>
+<div id="rsvp_section">
+    <h3 class="rsvp_title">RSVP</h3>
+    <div id="rsvp_form">
+        <div id="rsvp"></div>
+        <button id="rsvp_submit">Submit</button>
+    </div>
+    <p id="rsvp_success"><p>
 </div>
-<p id="rsvp_success"><p>
 
 <script>
 var el = document.getElementById.bind(document);
