@@ -12,9 +12,13 @@ body {
     -webkit-text-size-adjust: 100%;
     font-family: -apple-system, 'San Francisco', Roboto, Ubuntu, 'Helvetica Neue', Helvetica, 'Lucida Grande', 'Segoe UI', Arial, sans-serif;
     margin: 0;
+    text-align: center;
+}
+
+#hero {
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    height: 100vh;
     justify-content: space-around;
 }
 
@@ -22,15 +26,77 @@ h1 {
     font-size: 9em;
 }
 
-h2 {
-    font-size: 3em;
-}
-
-h1, h2 {
+h1, h2, h3 {
     margin: 0;
     display: block;
     text-align: center;
     padding: 0 20px;
+}
+
+h2 {
+    font-size: 3em;
+}
+
+h3 {
+    font-size: 2.9em;
+    margin-bottom: 20px;
+}
+
+.rsvp_title {
+    line-height: 32px;
+}
+
+#rsvp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin: 0 auto 20px;
+}
+
+.rsvp_line {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+}
+
+.rsvp_line:not(:first-child) * {
+    border-top: none;
+}
+
+.rsvp_line:not(:last-child) * {
+    border-bottom: none;
+}
+
+input[type=text], select, button {
+    font-size: 1.3em;
+    background: #FCFCFC;
+    border: solid 1px #BBBBBB;
+    padding: 10px;
+    margin: 0;
+    box-sizing: border-box;
+    height: 46px;
+}
+
+input.rsvp_name {
+    border-right: none;
+    width: 300px;
+}
+
+input.rsvp_phone {
+    border-left: none;
+    border-right: none;
+    width: 260px;
+}
+
+select.rsvp_answer {
+    border-left: none;
+    width: 160px;
+}
+
+#rsvp_submit {
+    margin-bottom: 80px;;
 }
 
 @media only screen and (max-device-width: 768px) and (min-device-width: 481px) {
@@ -55,8 +121,43 @@ h1, h2 {
 </style>
 </head>
 <body>
-<h1>April + Jonah</h1>
-<h2><time datetime="2017-09-16">Sunday, September 16th, 2017</time></h2>
+<div id="hero">
+    <h1>April + Jonah</h1>
+    <h2><time datetime="2017-09-16">Sunday, September 16th, 2017</time></h2>
+</div>
+<h3 class="rsvp_title">RSVP</h3>
+<div id="rsvp"></div>
+<button id="rsvp_submit">Submit</button>
+
+<script>
+var el = document.getElementById.bind(document);
+var rsvp = el('rsvp');
+var rsvp_template = '' +
+'<input type="text" class="rsvp_name" placeholder="{}">' +
+'<input type="text" class="rsvp_phone" placeholder="Phone number (optional)">' +
+'<select class="rsvp_answer">' +
+'<option>Attending</option>' +
+'<option>Not Attending</option>' +
+'</select>';
+
+function addRsvp(placeholder) {
+    var rsvp_line = document.createElement('div');
+    rsvp_line.className = 'rsvp_line';
+    rsvp_line.innerHTML = rsvp_template.replace('{}', placeholder);
+    rsvp.appendChild(rsvp_line);
+}
+addRsvp('Name');
+
+rsvp.addEventListener('input', function (event) {
+    var rsvps = rsvp.getElementsByClassName('rsvp_name');
+    for (var i = 0; i < rsvps.length; i++) {
+        if (!rsvps[i].value) {
+            return;
+        }
+    }
+    addRsvp('+' + rsvps.length + ' (optional)');
+});
+</script>
 </body>
 </html>
 
