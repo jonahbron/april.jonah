@@ -73,17 +73,45 @@ input[type=text], select, button {
     border-radius: 0px;
 }
 
-#rsvp_submit {
-    margin-bottom: 80px;;
+#rsvp_submit, #address_submit {
+    margin-bottom: 80px;
 }
 
-#rsvp_success {
+#rsvp_success, #address_success {
     display: none;
     margin-bottom: 80px;;
 }
 
 #rsvp_section {
     min-height: 100vh;
+    display: none;
+}
+
+#address_section {
+    min-height: 100vh;
+}
+
+#address_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+#address_form input {
+    max-width: 300px;
+}
+
+#address_form .address_region {
+    margin-bottom: 10px;
+}
+
+#address_form .address_name, #address_form .address_street, #address_form .address_unit {
+    border-bottom: none;
+}
+
+#address_form .address_street, #address_form .address_unit, #address_form .address_region {
+    border-top: none;
 }
 
 @media only screen and (min-device-width: 769px) {
@@ -171,12 +199,24 @@ input[type=text], select, button {
     <p id="rsvp_success"><p>
 </div>
 
+<div id="address_section">
+    <h3 class="rsvp_title">Submit Mailing Address</h3>
+    <div id="address_form">
+        <input type="text" class="address_name" placeholder="Name">
+        <input type="text" class="address_street" placeholder="Street Address">
+        <input type="text" class="address_unit" placeholder="Unit">
+        <input type="text" class="address_region" placeholder="City/state/zip">
+        <button id="address_submit">Submit</button>
+    </div>
+    <p id="address_success">Great, your invitation will be in the mail soon!<p>
+</div>
+
 <script>
 var el = document.getElementById.bind(document);
 var rsvp = el('rsvp');
 var rsvp_template = '' +
 '<input type="text" class="rsvp_name" placeholder="{}">' +
-'<input type="text" class="rsvp_phone" placeholder="Phone number (optional)">' +
+'<input type="number" class="rsvp_phone" placeholder="Phone number (optional)">' +
 '<select class="rsvp_answer">' +
 '<option>Attending</option>' +
 '<option>Not Attending</option>' +
@@ -233,6 +273,30 @@ el('rsvp_submit').addEventListener('click', function () {
         request.setRequestHeader('Content-type', 'application/json');
         request.send(JSON.stringify({attendees: attendees}));
     }
+});
+
+var address = el('address_form');
+
+el('address_submit').addEventListener('click', function () {
+    var name = address.getElementsByClassName('address_name')[0];
+    var street = address.getElementsByClassName('address_street')[0];
+    var unit = address.getElementsByClassName('address_unit')[0];
+    var region = address.getElementsByClassName('address_region')[0];
+
+    var request = new XMLHttpRequest();
+    request.addEventListener('load', function () {
+        var success = el('address_success');
+        success.style.display = 'block';
+        address.style.display = 'none';
+    });
+    request.open('POST', 'https://apriljonah-67575.firebaseio.com/addresses.json');
+    request.setRequestHeader('Content-type', 'application/json');
+    request.send(JSON.stringify({
+        name: name.value,
+        street: street.value,
+        unit: unit.value,
+        region: region.value,
+    }));
 });
 </script>
 </body>
