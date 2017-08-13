@@ -188,7 +188,13 @@ input[type=text], input[type=number], select, button {
 <body>
 <div id="hero">
     <h1>April + Jonah</h1>
-    <h2><time datetime="2017-09-16">Saturday, August 19th, 2017</time></h2>
+    <h2><time datetime="2017-09-16T17:00:00-07:00">5:00 PM, Saturday, August 19th, 2017</time></h2>
+</div>
+
+<div>
+    <h3>Location</h3>
+    <p><a id="location-link" href="https://www.google.com/maps/place/Hart+2+Hart+Vineyards/@38.83019,-120.956181,15z/data=!4m5!3m4!1s0x0:0x4e73f652b37593d3!8m2!3d38.83019!4d-120.956181">Hart 2 Hart Vineyards, Highway 49, Pilot Hill, CA</a></p>
+    <p><a href="https://calendar.google.com/calendar/embed?src=jh9cods5gg9n4t8fevfllaldmo%40group.calendar.google.com&ctz=America/Los_Angeles">Event Schedule Calendar</a></p>
 </div>
 
 <div>
@@ -304,6 +310,11 @@ el('address_submit').addEventListener('click', function () {
         region: region.value,
     }));
 });
+
+var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+if (iOS) {
+    el('location-link').href = 'http://maps.apple.com/?address=5821+CA-49,+Pilot+Hill,+CA+95664';
+}
 </script>
 </body>
 </html>
